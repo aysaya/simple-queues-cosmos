@@ -8,7 +8,7 @@
     {
         public RegisterHandler(IHandleMessage<T> handler, IProvideServiceBusConnection<T> bus)
         {
-            bus.QueueClient().RegisterMessageHandler(handler.HandleAsync, handler.HandleOption);
+            bus.QueueClient.RegisterMessageHandler(handler.HandleAsync, handler.HandleOption);
         }
     }
 
@@ -16,7 +16,7 @@
     {
         public RegisterSubscriptionHandler(IHandleMessage<T> handler, IProvideServiceBusConnection<T> bus)
         {
-            bus.SubscriptionClient().RegisterMessageHandler(handler.HandleAsync, handler.HandleOption);
+            bus.SubscriptionClient.RegisterMessageHandler(handler.HandleAsync, handler.HandleOption);
         }
     }
 }

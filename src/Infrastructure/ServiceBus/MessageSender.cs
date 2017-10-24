@@ -21,11 +21,11 @@ namespace Infrastructure.ServiceBus
 
         public async Task SendAsync(T message)
         {
-            await bus.QueueClient().SendAsync
+            await bus.QueueClient.SendAsync
                 (
                     new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)))
                 );
-            System.Console.WriteLine("Message sent successfully!");
+            System.Console.WriteLine($"Message {((dynamic)message).Id} sent successfully!");
         }
     }
 
@@ -45,11 +45,11 @@ namespace Infrastructure.ServiceBus
         
         public async Task SendAsync(T message)
         {
-            await bus.TopicClient().SendAsync
+            await bus.TopicClient.SendAsync
                 (
                     new Message(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)))
                 );
-            System.Console.WriteLine("Message published successfully!");
+            System.Console.WriteLine($"Message {((dynamic)message).Id} published successfully!");
         }
     }
 }

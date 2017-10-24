@@ -10,7 +10,7 @@ namespace Infrastructure.ServiceBus
             string connectionString, string queueName)
         {
             var conn = new ServiceBusConnectionProvider<T>(connectionString, queueName);
-            services.AddScoped(typeof(IProvideServiceBusConnection<T>), (p) => conn);
+            services.AddSingleton(typeof(IProvideServiceBusConnection<T>), (p) => conn);
             services.AddScoped(typeof(ISendMessage<T>), typeof(MessageSender<T>));
 
             return services;
@@ -20,7 +20,7 @@ namespace Infrastructure.ServiceBus
             string connectionString, string queueName)
         {
             var conn = new ServiceBusConnectionProvider<T>(connectionString, queueName);
-            services.AddScoped(typeof(IProvideServiceBusConnection<T>), (p) => conn);
+            services.AddSingleton(typeof(IProvideServiceBusConnection<T>), (p) => conn);
             services.AddScoped(typeof(IProcessMessage<T>), typeof(TProcessor));
             services.AddScoped(typeof(IHandleMessage<T>), typeof(MessageHandler<T>));
             services.AddScoped(typeof(IRegisterHandler<T>), typeof(RegisterHandler<T>));           
@@ -32,7 +32,7 @@ namespace Infrastructure.ServiceBus
             string connectionString, string topicName)
         {
             var conn = new ServiceBusConnectionProvider<T>(connectionString, topicName, null);
-            services.AddScoped(typeof(IProvideServiceBusConnection<T>), (p) => conn);
+            services.AddSingleton(typeof(IProvideServiceBusConnection<T>), (p) => conn);
             services.AddScoped(typeof(IPublishMessage<T>), typeof(TopicSender<T>));
 
             return services;
@@ -42,7 +42,7 @@ namespace Infrastructure.ServiceBus
             string connectionString, string topicName, string subscriptionName)
         {
             var conn = new ServiceBusConnectionProvider<T>(connectionString, topicName, subscriptionName);
-            services.AddScoped(typeof(IProvideServiceBusConnection<T>), (p) => conn);
+            services.AddSingleton(typeof(IProvideServiceBusConnection<T>), (p) => conn);
             services.AddScoped(typeof(IProcessMessage<T>), typeof(TProcessor));
             services.AddScoped(typeof(IHandleMessage<T>), typeof(MessageHandler<T>));
             services.AddScoped(typeof(IRegisterHandler<T>), typeof(RegisterSubscriptionHandler<T>));            

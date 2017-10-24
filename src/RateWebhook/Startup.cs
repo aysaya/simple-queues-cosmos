@@ -1,10 +1,10 @@
-﻿using Contracts;
-using Infrastructure.CosmosDb;
+﻿using Infrastructure.CosmosDb;
 using Infrastructure.ServiceBus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RateWebhook.DomainModels;
 using RateWebhook.ResourceAccessors;
 
 namespace RateWebhook
@@ -31,7 +31,7 @@ namespace RateWebhook
             services.AddScoped(typeof(IQueryRA<ThirdPartyRate>), typeof(ThirdPartyPersistence));
             services.AddScoped(typeof(ICommandRA<ThirdPartyRate>), typeof(ThirdPartyPersistence));
 
-            services.AddQueueSender<ThirdPartyRate>
+            services.AddQueueSender<Contracts.CreateQuote>
                 (
                     Configuration["simple-bus-connection"], 
                     Configuration["simple-queue-name"]

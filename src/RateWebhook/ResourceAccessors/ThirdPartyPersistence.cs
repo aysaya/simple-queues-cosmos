@@ -1,12 +1,12 @@
-﻿using Contracts;
-using Infrastructure.CosmosDb;
+﻿using Infrastructure.CosmosDb;
+using RateWebhook.DomainModels;
 using System.Threading.Tasks;
 
 namespace RateWebhook.ResourceAccessors
 {
     public interface ICommandRA<T>
     {
-        Task SaveAsync(T rate);
+        Task<T> SaveAsync(T rate);
     }
 
     public interface IQueryRA<T>
@@ -23,9 +23,9 @@ namespace RateWebhook.ResourceAccessors
             this.thirdPartyRepository = thirdPartyRepository;
         }
 
-        public async Task SaveAsync(ThirdPartyRate rate)
+        public async Task<ThirdPartyRate> SaveAsync(ThirdPartyRate rate)
         {
-            await thirdPartyRepository.SaveAsync(rate);
+            return await thirdPartyRepository.SaveAsync(rate);            
         }
 
         public async Task<ThirdPartyRate[]> GetAllAsync()

@@ -11,7 +11,7 @@ namespace Infrastructure.CosmosDb
                 string databaseId, string collectionId
             )
         {
-            services.AddScoped(typeof(IProvideCosmosDbConnection<T>), 
+            services.AddSingleton(typeof(IProvideCosmosDbConnection<T>), 
                 p => new CosmosConnectionProvider<T>
                 (
                     endpoint, connKey, databaseId, collectionId

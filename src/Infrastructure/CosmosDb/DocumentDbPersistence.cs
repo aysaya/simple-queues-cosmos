@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Azure.Documents.Linq;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Infrastructure.CosmosDb
 {
     public interface IProvideDocumentRepository<T>
     {
-        Task SaveAsync(T rate);
+        Task<T> SaveAsync(T t);
 
         Task<T[]> GetAllAsync();
     }
@@ -20,13 +19,16 @@ namespace Infrastructure.CosmosDb
             this.cosmosDbConnection = cosmosDbConnection;
         }
 
-        public async Task SaveAsync(T rate)
+        public async Task<T> SaveAsync(T t)
         {
-            await cosmosDbConnection.DocumentClient.CreateDocumentAsync
+            var result = (dynamic)(await cosmosDbConnection.DocumentClient.CreateDocumentAsync
                 (
                     cosmosDbConnection.DocumentCollectionUri,
-                    rate
-                );
+                    t
+                )).Resource;
+
+            System.Console.WriteLine($"Request {result.Id} saved successfully!");
+            return result;
         }
 
         public async Task<T[]> GetAllAsync()

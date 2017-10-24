@@ -1,19 +1,19 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Infrastructure.ServiceBus;
-using Contracts;
 using RateWebhook.ResourceAccessors;
+using RateWebhook.DomainModels;
 
 namespace RateWebhook.Controllers
 {
     [Route("api/[controller]")]
     public class ThirdpartyRatesController : Controller
     {
-        private readonly ISendMessage<ThirdPartyRate> sender;
+        private readonly ISendMessage<Contracts.CreateQuote> sender;
         private readonly IQueryRA<ThirdPartyRate> query;
         private readonly ICommandRA<ThirdPartyRate> command;
 
-        public ThirdpartyRatesController(ISendMessage<ThirdPartyRate> sender, 
+        public ThirdpartyRatesController(ISendMessage<Contracts.CreateQuote> sender, 
             IQueryRA<ThirdPartyRate> query, ICommandRA<ThirdPartyRate> command)
         {
             this.sender = sender;
@@ -22,13 +22,28 @@ namespace RateWebhook.Controllers
         }
 
         [HttpPost]
-        public async Task Post([FromBody]ThirdPartyRate value)
+        public async Task Post([FromBody]Contracts.ThirdPartyRate value)
         {
-            await Task.WhenAll
-            (
-                command.SaveAsync(value),
-                sender.SendAsync(value)
-            );            
+            var thirdPartyRate = await command.SaveAsync
+                (
+                    new ThirdPartyRate
+                    {
+                        BaseCurrency = value.BaseCurrency,
+                        TradeCurrency = value.TradeCurrency,
+                        Rate = value.Rate,
+                        ReferenceId = value.PartnerId
+                    }
+                );
+
+            var taskSend = sender.SendAsync(new Contracts.CreateQuote
+            {
+                Id = thirdPartyRate.Id,
+                BaseCurrency = thirdPartyRate.BaseCurrency,
+                TradeCurrency = thirdPartyRate.BaseCurrency,
+                Rate = thirdPartyRate.Rate,
+            });
+
+            await Task.CompletedTask;
         }
 
         [HttpGet]

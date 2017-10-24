@@ -4,9 +4,9 @@ namespace Infrastructure.ServiceBus
 {
     public interface IProvideServiceBusConnection<T>
     {
-        QueueClient QueueClient();
-        TopicClient TopicClient();
-        SubscriptionClient SubscriptionClient();
+        QueueClient QueueClient { get; }
+        TopicClient TopicClient { get; }
+        SubscriptionClient SubscriptionClient { get; }
     }
 
     public class ServiceBusConnectionProvider<T> : IProvideServiceBusConnection<T>
@@ -30,20 +30,11 @@ namespace Infrastructure.ServiceBus
                 subscription = new SubscriptionClient(connectionString, topicName, subscriptionName);
         }
 
-        public QueueClient QueueClient()
-        {
-            return queueClient;
-        }
-
-        public SubscriptionClient SubscriptionClient()
-        {
-            return subscription;
-        }
-
-        public TopicClient TopicClient()
-        {
-            return topicClient;
-        }
+        public QueueClient QueueClient =>queueClient;
+        
+        public SubscriptionClient SubscriptionClient => subscription;
+        
+        public TopicClient TopicClient => topicClient;        
     }
 
 }

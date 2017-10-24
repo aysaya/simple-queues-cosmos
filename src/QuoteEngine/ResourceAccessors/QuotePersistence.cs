@@ -6,7 +6,7 @@ namespace QuoteEngine.ResourceAccessors
 {
     public interface ICommandRA<T>
     {
-        Task SaveAsync(T quote);
+        Task<T> SaveAsync(T quote);
     }
     public interface IQueryRA<T>
     {
@@ -22,9 +22,9 @@ namespace QuoteEngine.ResourceAccessors
             this.quoteRepository = quoteRepository;
         }
 
-        public async Task SaveAsync(Quote quote)
+        public async Task<Quote> SaveAsync(Quote quote)
         {
-            await quoteRepository.SaveAsync(quote);
+            return await quoteRepository.SaveAsync(quote);
         }
 
         public async Task<Quote[]> GetAllAsync()
