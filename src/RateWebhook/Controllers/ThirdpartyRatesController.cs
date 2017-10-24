@@ -39,7 +39,7 @@ namespace RateWebhook.Controllers
             {
                 Id = thirdPartyRate.Id,
                 BaseCurrency = thirdPartyRate.BaseCurrency,
-                TradeCurrency = thirdPartyRate.BaseCurrency,
+                TradeCurrency = thirdPartyRate.TradeCurrency,
                 Rate = thirdPartyRate.Rate,
             });
 
